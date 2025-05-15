@@ -23,7 +23,7 @@ export default defineComponent({
 }
 .StartButton, .monsterButton {
   border: none;
-  color: rgb(88, 118, 153);
+  color: rgb(129, 175, 228);
   padding: 15px 32px;
   text-decoration: none;
   font-size: 50px;

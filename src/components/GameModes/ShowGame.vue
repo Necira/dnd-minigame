@@ -51,6 +51,11 @@
                           :potions = "activePlayer.potions"
                           @pressedAbility="onClick"
                           :clickable="true"/>
+          <paladin-abilities v-if="activePlayer.type === 'Paladin' && activePlayer" 
+                          class="abilityCombat"
+                          :potions = "activePlayer.potions"
+                          @pressedAbility="onClick"
+                          :clickable="true"/>
       </div>
     </div>
     <div class="combatLog" v-if="playerPicked ">
@@ -73,6 +78,7 @@
 
 import { Mage } from '../../classes/Playable/Mage.js';
 import { Warrior } from '../../classes/Playable/Warrior.js';
+import { Paladin } from '../../classes/Playable/Paladin.js';
 import { Rogue } from '../../classes/Playable/Rogue.js';
 import { defineComponent } from 'vue';
 import { diceRoll } from '@/classes/DiceRoll';
@@ -82,6 +88,7 @@ import PlayerPick from '../Characterview/PlayerInfo/PlayerPick.vue';
 import MageAbilities from '../Characterview/Abilities/MageAbilities.vue';
 import RogueAbilities from '../Characterview/Abilities/RogueAbilities.vue';
 import WarriorAbilities from '../Characterview/Abilities/WarriorAbilities.vue';
+import PaladinAbilities from '../Characterview/Abilities/PaladinAbilities.vue';
 import EndScreen from '../StartEnd/EndScreen.vue'
 export default defineComponent({
 
@@ -92,6 +99,7 @@ export default defineComponent({
     MageAbilities,
     WarriorAbilities,
     RogueAbilities,
+    PaladinAbilities,
     gameLog,
     EndScreen,
   },
@@ -147,6 +155,8 @@ export default defineComponent({
         pickedClass = new Mage();
       } else if (pick === 'Rogue'){
         pickedClass = new Rogue();
+      } else if (pick === 'Paladin'){
+        pickedClass = new Paladin();
       }
       return pickedClass;
     },

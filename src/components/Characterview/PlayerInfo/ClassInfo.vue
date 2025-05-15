@@ -1,30 +1,36 @@
 <template>
   <div class="classInfo">
-      <img :src="img" class="image" @click="toggleInfos()">
-      <p class="name" v-if="showClass"> {{ name }} </p>
-      <p class="description" v-if="showClass ">{{ description }}</p>
-      <p  class="header" v-if="showClass ">abilities</p>
-      <component :is="componentName"
-                v-if="showClass"
-                class="ability"/>
+    <img :src="img" class="image" @click="toggleInfos()" />
+
+    <!-- Togglebarer Bereich, der Layout nicht verschiebt -->
+    <div class="toggleContent" :class="{ visible: showClass }">
+      <p class="name">{{ name }}</p>
+      <p class="description">{{ description }}</p>
+      <p class="header">abilities</p>
+      <component :is="componentName" class="ability" />
+    </div>
   </div>
 </template>
+
 <script>
-import { defineComponent} from 'vue'
-import GoblinAbilities from '../Abilities/GoblinAbilities.vue';
-import DragonAbilities from '../Abilities/DragonAbilities.vue';
-import RogueAbilities from '../Abilities/RogueAbilities.vue';
-import MageAbilities from '../Abilities/MageAbilities.vue';
-import WarriorAbilities from '../Abilities/WarriorAbilities.vue';
+import { defineComponent } from 'vue'
+import GoblinAbilities from '../Abilities/GoblinAbilities.vue'
+import DragonAbilities from '../Abilities/DragonAbilities.vue'
+import RogueAbilities from '../Abilities/RogueAbilities.vue'
+import MageAbilities from '../Abilities/MageAbilities.vue'
+import WarriorAbilities from '../Abilities/WarriorAbilities.vue'
+import PaladinAbilities from '../Abilities/PaladinAbilities.vue'
+
 export default defineComponent({
+  name: "ClassInfo",
   components: {
     RogueAbilities,
     MageAbilities,
     WarriorAbilities,
     GoblinAbilities,
-    DragonAbilities
+    DragonAbilities,
+    PaladinAbilities,
   },
-  name : "ClassInfo",
   props: [
     'name',
     'img',
@@ -35,138 +41,102 @@ export default defineComponent({
     'show',
     'componentName'
   ],
-  emits: [
-    'toggled'
-  ],
+  emits: ['toggled'],
   data() {
-    return { 
-      showClass : false,
+    return {
+      showClass: false,
     }
   },
-
   methods: {
     toggleInfos() {
-      this.showClass = !this.showClass;
-      this.$emit('toggled', this.infoType, this.showClass);
+      this.showClass = !this.showClass
+      this.$emit('toggled', this.infoType, this.showClass)
     }
   },
   watch: {
-    show(newP,oldP){
-      if(oldP) {
-        this.showClass = false;
+    show(newVal, oldVal) {
+      if (oldVal) {
+        this.showClass = false
       }
     }
   }
-});
+})
 </script>
 
 <style scoped>
 * {
-  color:white;
+  color: white;
 }
 
 .classInfo {
   display: grid;
-  grid-template-areas: 
-                        "image"
-                        "name"
-                        "description"
-                        "header"
-                        "abilities";
+  grid-template-areas:
+    "image"
+    "toggleContent";
   grid-template-columns: auto;
-  grid-template-rows: auto;
-  margin:0px;
+  grid-template-rows: auto auto;
+  margin: 0px;
   cursor: pointer;
   user-select: none;
   transition: transform ease-in-out 0.2s;
   justify-self: center;
-  padding:10px;
+  padding: 10px;
 
+  overflow: hidden;
+  position: relative;
 }
 
-.name {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
-              rgba(0, 0, 0, 0.12) 0px -12px 30px, 
-              rgba(0, 0, 0, 0.12) 0px 4px 6px,
-              rgba(0, 0, 0, 0.17) 0px 12px 13px,
-             rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  display:flex;
-  align-items: center;
-  padding:10px;
-  grid-area: name;
-  color:white;
-  background-color:  #65375b;
-  border-radius: 10px;
-  border: solid black 2px;
-  border-bottom: 2px solid black;
-  justify-self:center;
-}
 .image {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
-              rgba(0, 0, 0, 0.12) 0px -12px 30px, 
-              rgba(0, 0, 0, 0.12) 0px 4px 6px,
-              rgba(0, 0, 0, 0.17) 0px 12px 13px,
-             rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  margin:10px;
-  margin-bottom:20px;
   grid-area: image;
-  height: 100px;
+  margin: 10px 0 20px 0;
+  height: 30rem;
   background-color: white;
   border-radius: 10px;
   border: solid black 2px;
-  justify-self:center;
+  justify-self: center;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+              rgba(0, 0, 0, 0.12) 0px -12px 30px,
+              rgba(0, 0, 0, 0.12) 0px 4px 6px,
+              rgba(0, 0, 0, 0.17) 0px 12px 13px,
+              rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 .image:hover {
   transform: scale(1.3);
 }
 
-.Rogue {
-  margin:0;
-  padding: 0;
-}
-.Mage {
-  margin:0;
-  padding: 0;
-}
-.Warrior {
-  margin:0;
-  padding: 0;
+.toggleContent {
+  grid-area: toggleContent;
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
 }
 
-.Monster {
-  margin:0;
-  padding:0;
+.toggleContent.visible {
+  max-height: 1000px; /* groß genug für den Inhalt */
+  opacity: 1;
 }
+
+.name,
+.description,
 .header {
   background-color: #65375b;
-  border-radius:10px;
-  height:20px;
-  justify-self:center;
-  color:white;
-  padding:5px;
-  margin-top:10px;
-  grid-area: header;
-  border-bottom: 2px solid black;
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
-              rgba(0, 0, 0, 0.12) 0px -12px 30px, 
+  border-radius: 10px;
+  border: 2px solid black;
+  margin: 10px auto;
+  padding: 10px;
+  width: 90%;
+  font-size:2rem;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+              rgba(0, 0, 0, 0.12) 0px -12px 30px,
               rgba(0, 0, 0, 0.12) 0px 4px 6px,
               rgba(0, 0, 0, 0.17) 0px 12px 13px,
-             rgba(0, 0, 0, 0.09) 0px -3px 5px;
+              rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
-.description {
-  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, 
-              rgba(0, 0, 0, 0.12) 0px -12px 30px, 
-              rgba(0, 0, 0, 0.12) 0px 4px 6px,
-              rgba(0, 0, 0, 0.17) 0px 12px 13px,
-             rgba(0, 0, 0, 0.09) 0px -3px 5px;
-  background-color: #65375b;
-  margin:5px;
-  margin-bottom: 5px;
-  border-bottom: 2px solid black;
-  grid-area: description;
-  border-radius:10px;
-  padding:30px;
-  justify-self:center;
-  color:rgb(255, 255, 255);
+
+.ability {
+  margin-top: 10px;
+  padding: 10px;
 }
 </style>
