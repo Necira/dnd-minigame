@@ -95,7 +95,6 @@ export default defineComponent({
 
 .button {
   color:white;
-  margin-top: 100px;
   padding: 5px;
   background-color: rgba(106, 106, 169, 0.432);
   border-radius: 3px;

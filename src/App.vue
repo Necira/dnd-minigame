@@ -39,24 +39,35 @@ export default defineComponent ({
 <style>
 
 .all {
-  background-image: url("../public/assets/background.jpg");
-  background-size: cover; 
-    background-position: center;
-    background-repeat: no-repeat;
-    height:1300px;
+
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),  /* Grauschleier */
+    url("../public/assets/background.jpg") no-repeat center center fixed;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .start {
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    height:1000px;
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  height:1000px;
 }
 .menu {
-  display: flex;
+display: flex;
   justify-content: center;
-  align-items:center;
-  height: 50px;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
@@ -83,7 +94,7 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
+
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
 	display: block;

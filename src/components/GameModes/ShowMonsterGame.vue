@@ -1,90 +1,90 @@
 <template>
 <player-pick  v-if="playerPicked === false"
-                  @picking="initializePlayer"
+             @picking="initializePlayer"
                   :Monster="true"/>
 <monster-pick v-if="playerPicked && monsterPicked === false"
-                  @pickingMonster="initializeMonster"/>
-  <div class="game" v-if="endOfGame === false">
-    <div class="combat">
-      <character-stats v-if="playerPicked && monsterPicked" 
-                      class="playerOne" 
-                      :icon="playerOne.icon"
-                      :initiative="playerOne.initiative"
-                      :player="playerOne.charName"
-                      :hp="playerOne.currentHp" 
-                      :damageDeal="playerOne.damageDeal" 
-                      :damageTake="playerOne.damageTake" 
-                      :statusEffects="playerOne.statusEffects"
-                      :potions="playerOne.potions"
-                      :active="playerOne.color"
-                      :initialHp="playerOne.initialHp"/>
-      <character-stats v-if="playerPicked && monsterPicked" 
-                      class="playerTwo" 
-                      :icon="playerTwo.icon"
-                      :initiative="playerTwo.initiative"
-                      :player="playerTwo.charName"
-                      :hp="playerTwo.currentHp" 
-                      :damageDeal="playerTwo.damageDeal" 
-                      :damageTake="playerTwo.damageTake" 
-                      :statusEffects="playerTwo.statusEffects"
-                      :potions="playerTwo.potions"
-                      :active="playerTwo.color"
-                      :initialHp="playerTwo.initialHp"/>
-      <character-stats v-if="playerPicked && monsterPicked" 
-                      class="monster" 
-                      :icon="monster.icon"
-                      :initiative="monster.initiative"
-                      :player="monster.charName"
-                      :hp="monster.currentHp" 
-                      :damageDeal="monster.damageDeal" 
-                      :damageTake="monster.damageTake" 
-                      :statusEffects="monster.statusEffects"
-                      :active="monster.color"
-                      :initialHp="monster.initialHp"/>
-      <h1 class="activePlayer" 
-            v-if="activePlayer">{{ this.activePlayer.charName }} 's turn
-      </h1>
-      <mage-abilities class="abilityCombat"
-                      v-if="activePlayer.type === 'Mage' && activePlayer" 
-                      :potions="activePlayer.potions"
-                      @pressedAbility="onClick"
-                      :clickable="true"/>
-      <rogue-abilities v-if="activePlayer.type === 'Rogue' && activePlayer" 
-                      class="abilityCombat"
-                      :potions="activePlayer.potions"
-                      @pressedAbility="onClick"
-                      :sneakAttackUsed="activePlayer.sneakAttackUsed"
-                      :initiative="target"
-                      :clickable="true"/>
-      <warrior-abilities v-if="activePlayer.type === 'Warrior' && activePlayer" 
-                        class="abilityCombat"
-                        :potions="activePlayer.potions"
-                        @pressedAbility="onClick"
-                        :clickable="true"/>
-      <component :is="componentMonster" v-if="monsterTurn && activePlayer.type === 'Monster' && activePlayer"
-                        class="abilityCombat"
-                        potions="activePlayer.potions"
-                        @pressedAbility="onClick"
-                        :clickable="false"/>
-    <div class="combatLog" v-if="playerPicked && monsterPicked">
-      <game-log :ability='logAbility'
-                :activePlayer="logActivePlayer"
-                :target="logTarget"
-                :damage="logDamage"
-                :heal="logHeal"
-                :log="log"
-                :logStatus="logStatus">
-      </game-log>
+              @pickingMonster="initializeMonster" />
+<div class="game" v-if="endOfGame === false">
+  <div class="combat">
+    <character-stats v-if="playerPicked && monsterPicked"
+                     class="playerOne"
+                     :icon="playerOne.icon"
+                     :initiative="playerOne.initiative"
+                     :player="playerOne.charName"
+                     :hp="playerOne.currentHp"
+                     :damageDeal="playerOne.damageDeal"
+                     :damageTake="playerOne.damageTake"
+                     :statusEffects="playerOne.statusEffects"
+                     :potions="playerOne.potions"
+                     :active="playerOne.color"
+                     :initialHp="playerOne.initialHp" />
+    <character-stats v-if="playerPicked && monsterPicked"
+                     class="playerTwo"
+                     :icon="playerTwo.icon"
+                     :initiative="playerTwo.initiative"
+                     :player="playerTwo.charName"
+                     :hp="playerTwo.currentHp"
+                     :damageDeal="playerTwo.damageDeal"
+                     :damageTake="playerTwo.damageTake"
+                     :statusEffects="playerTwo.statusEffects"
+                     :potions="playerTwo.potions"
+                     :active="playerTwo.color"
+                     :initialHp="playerTwo.initialHp" />
+    <character-stats v-if="playerPicked && monsterPicked"
+                     class="monster"
+                     :icon="monster.icon"
+                     :initiative="monster.initiative"
+                     :player="monster.charName"
+                     :hp="monster.currentHp"
+                     :damageDeal="monster.damageDeal"
+                     :damageTake="monster.damageTake"
+                     :statusEffects="monster.statusEffects"
+                     :active="monster.color"
+                     :initialHp="monster.initialHp" />
+    <h1 class="activePlayer"
+        v-if="activePlayer">{{ this.activePlayer.charName }}'s turn
+    </h1>
+    <mage-abilities class="abilityCombat"
+                    v-if="activePlayer.type === 'Mage' && activePlayer"
+                    :potions="activePlayer.potions"
+                    @pressedAbility="onClick"
+                    :clickable="true" />
+    <rogue-abilities v-if="activePlayer.type === 'Rogue' && activePlayer"
+                     class="abilityCombat"
+                     :potions="activePlayer.potions"
+                     @pressedAbility="onClick"
+                     :sneakAttackUsed="activePlayer.sneakAttackUsed"
+                     :initiative="target"
+                     :clickable="true" />
+    <warrior-abilities v-if="activePlayer.type === 'Warrior' && activePlayer"
+                       class="abilityCombat"
+                       :potions="activePlayer.potions"
+                       @pressedAbility="onClick"
+                       :clickable="true" />
+    <component :is="componentMonster"
+               v-if="monsterTurn && activePlayer.type === 'Monster' && activePlayer"
+               class="abilityCombat"
+               potions="activePlayer.potions"
+               @pressedAbility="onClick"
+               :clickable="false" />
+  <div class="combatLog" v-if="playerPicked && monsterPicked">
+    <game-log :ability="logAbility"
+              :activePlayer="logActivePlayer"
+              :target="logTarget"
+              :damage="logDamage"
+              :heal="logHeal"
+              :log="log"
+              :logStatus="logStatus">
+    </game-log>
     </div>
    
   </div>
-  </div>
- 
-  <div class="end">
-    <end-screen :playerWin="playerWin"
-                v-if="endOfGame">
-    </end-screen>
-  </div>
+</div>
+<div class="end">
+  <end-screen :playerWin="playerWin"
+              v-if="endOfGame">
+  </end-screen>
+</div>
 </template>
 
 <script>
@@ -420,48 +420,95 @@ data() {
 });
 </script>
 <style scoped>
-
 .combat {
-  display:grid;
-  grid-template-areas: "activePlayer activePlayer activePlayer"
-                        "playerOne abilityCombat playerTwo"
-                        "monster monster combatLog";
+  display: grid;
+  grid-template-areas:
+    "activePlayer activePlayer activePlayer"
+    "playerOne abilityCombat playerTwo"
+    "monster monster monster"; 
   grid-template-rows: auto auto auto;
   grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  box-sizing: border-box; 
 }
+
 .combatLog {
-  grid-area: combatLog;
-  display:flex;
-  justify-content: center;
+  position: fixed; 
+  top: 20px; 
+  right: 20px;
+  width: 300px; 
+  background-color: rgba(0, 0, 0, 0.7); 
+  margin-top: 20px; 
+  color: white;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-height: 80vh;
+  overflow-y: auto; 
 }
-.monster {
-  grid-area: monster;
-}
+
 .activePlayer {
   background-color: rgba(168, 168, 173, 0.553);
-  color:white;
+  color: white;
   font-size: 30px;
   grid-area: activePlayer;
-  border-color:gold;
+  border-color: gold;
   padding: 20px;
-  margin: 30px;
+  margin: 0; 
   justify-self: center;
   border-radius: 8px;
+  box-sizing: border-box;
 }
-.playerOne {
-  grid-area: playerOne;
+
+.playerOne,
+.playerTwo,
+.monster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7); 
+  color: white;
+  padding: 20px;
+  margin: 0; /* Remove unwanted spacing */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
+
+.monster {
+  grid-area: monster;
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .abilityCombat {
   grid-area: abilityCombat;
+  margin: 0;
+  padding: 0;
 }
-.playerTwo {
-  grid-area: playerTwo;
+
+h1.activePlayer {
+  margin: 0; 
+  padding: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
 }
-.win {
-  font-size: large;
-  color:red;
+
+.character-stats {
   display: flex;
-  margin: 200px;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
 }
 </style>
